@@ -1,41 +1,67 @@
-# Doctor-Patient-Smart-Contract-Security
-Patient-Doctor Medical Records Smart Contract System
+# Doctor–Patient Smart Contract Security
 
-This repository contains Solidity smart contracts for a secure patient-doctor medical data sharing system on Ethereum. The system enables patients to store, manage, and share their medical records with authorized doctors in a privacy-preserving and access-controlled manner. It is designed as an educational demonstration of secure smart contract development, authorization flows, and highlights potential attack surfaces—specifically showcasing and testing reentrancy vulnerabilities.
-Features
+A Solidity-based research project investigating **cross-contract reentrancy and access-control vulnerabilities** in a blockchain-based patient–doctor medical-record system.
 
-    Patient-Centric Medical Records:
-    Patients can create and update their own detailed medical profiles, including personal information, allergies, medications, surgeries, and physician notes.
+The project implements a patient-centric medical-record architecture, demonstrates vulnerable cross-contract interactions, and provides mitigated contract variants using defensive smart-contract design patterns.
 
-    Doctor Authorization:
-    Patients retain full control over data access and can individually authorize doctors to view or update their records.
+**Research Paper:** [Smart Contracts in Healthcare: Practical Defences Against Cross-Contract Reentrancy Attacks](https://link.springer.com/chapter/10.1007/978-3-032-19675-0_46)
 
-    Access Control:
-    Only patients and their authorized doctors can modify or access sensitive information, enforced at the contract level.
+**Published in:** Springer Lecture Notes in Networks and Systems (LNNS), ICTCS 2025  
+**Pages:** 481–492  
+**Publication Date:** April 1, 2026
 
-    Attack Simulation:
-    The included Doctor contract demonstrates a simulated reentrancy attack and how improper contract design can be exploited, enhancing understanding of critical security issues.
+---
 
-    Comprehensive Event Logs:
-    Emits events for all major actions: record creation, updates, doctor authorization, and potentially dangerous interactions, allowing for transparent off-chain monitoring.
+## Overview
 
-Security Highlights
+Blockchain-based healthcare systems can provide tamper-resistant records and decentralized access control. However, interactions between multiple smart contracts can introduce security vulnerabilities that may not be apparent when contracts are considered independently.
 
-    Illustrates both vulnerable and secure patterns, including the use of authorization checks and the implications of call-based Ether transfers.
+This project studies one such class of vulnerability: **cross-contract reentrancy**.
 
-    Designed as a learning tool for understanding and mitigating smart contract vulnerabilities, with special focus on reentrancy and access control.
+The system consists of separate Patient and Doctor smart contracts. Patients maintain control over their medical records and can authorize individual doctors to access or update their information.
 
-Getting Started
+The repository contains:
 
-    Deploy the PatientInfo contract for patient record management.
+- Patient medical-record management
+- Doctor authorization and access control
+- Cross-contract interactions
+- Vulnerable contract implementations
+- Reentrancy attack contracts
+- Mitigated contract implementations
+- Supporting security-testing documentation
 
-    Deploy the Doctor contract with the address of the deployed PatientInfo contract.
+The vulnerable implementations are intentionally retained to demonstrate how unsafe contract interactions can be exploited and how defensive patterns can be applied.
 
-    Interact with the system as patient or doctor, authorizing access and managing records.
+---
 
-    Use dangerousInteraction to simulate unsafe contract interactions and observe the outcome of reentrancy attacks.
+## System Architecture
 
-Disclaimer
+The project uses two primary smart contracts:
 
-    For research and educational purposes only.
-    This code intentionally exposes a vulnerable flow to demonstrate smart contract security concepts and should not be used as-is in production.
+```text
+                    ┌────────────────────────┐
+                    │        Patient         │
+                    │                        │
+                    │  • Medical Records     │
+                    │  • Authorization       │
+                    │  • Patient Information │
+                    └────────────┬───────────┘
+                                 │
+                                 │ Cross-contract
+                                 │ interaction
+                                 ▼
+                    ┌────────────────────────┐
+                    │         Doctor         │
+                    │                        │
+                    │  • Access Records      │
+                    │  • Update Records      │
+                    │  • Authorization Check │
+                    └────────────┬───────────┘
+                                 │
+                                 │ Vulnerable
+                                 │ interaction
+                                 ▼
+                    ┌────────────────────────┐
+                    │   Reentrancy Attack    │
+                    │       Contract         │
+                    └────────────────────────┘
